@@ -14,7 +14,7 @@ export default function FinancialCalculator({ data, updateField }) {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
         <div className="md:col-span-3 space-y-2">
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">PASSIV DAROMAD</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">AKTIV DAROMAD</label>
           <div className="relative">
             <span className="absolute left-0 bottom-1 text-gray-500 dark:text-gray-400 font-medium transition-colors duration-200">$</span>
             <input
@@ -28,7 +28,7 @@ export default function FinancialCalculator({ data, updateField }) {
         </div>
         <div className="md:col-span-1 text-center hidden md:block pb-2 text-gray-400 dark:text-gray-500 font-bold text-xl transition-colors duration-200">+</div>
         <div className="md:col-span-3 space-y-2">
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">AKTIV DAROMAD</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">PASSIV DAROMAD</label>
           <div className="relative">
             <span className="absolute left-0 bottom-1 text-gray-500 dark:text-gray-400 font-medium transition-colors duration-200">$</span>
             <input
