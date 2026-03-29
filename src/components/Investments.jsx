@@ -1,9 +1,37 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Plus, Trash2, X, ChevronDown } from 'lucide-react';
 
 export default function Investments({ data, setData }) {
   // null = add new, or index number = change type of existing row
   const [typeModalTarget, setTypeModalTarget] = useState(null);
+
+  // Compute condition: >3 businesses and passive income > expenses
+  const businessIncome = data.investments
+    ? data.investments.reduce((sum, inv) => sum + (parseFloat(inv.income) || 0), 0)
+    : 0;
+  const expenses = parseFloat(data.expenses) || 0;
+  const isQualified = data.investments.length > 3 && businessIncome > expenses;
+
+  // Pulsing state: true = currently pulsing
+  const [isPulsing, setIsPulsing] = useState(false);
+  const pulseTimerRef = useRef(null);
+  const wasQualifiedRef = useRef(false);
+
+  useEffect(() => {
+    if (isQualified && !wasQualifiedRef.current) {
+      // Condition just became true — start pulsing for 60 seconds
+      setIsPulsing(true);
+      clearTimeout(pulseTimerRef.current);
+      pulseTimerRef.current = setTimeout(() => setIsPulsing(false), 60000);
+    }
+    if (!isQualified) {
+      // Condition dropped — reset so it can pulse again next time
+      setIsPulsing(false);
+      clearTimeout(pulseTimerRef.current);
+    }
+    wasQualifiedRef.current = isQualified;
+    return () => clearTimeout(pulseTimerRef.current);
+  }, [isQualified]);
 
   const handleInvestmentChange = (index, field, value) => {
     setData((prev) => {
@@ -130,8 +158,8 @@ export default function Investments({ data, setData }) {
         >
           <Plus size={18} /> Yangi biznes qo'shish
         </button>
-        {data.investments.length > 3 && (parseFloat(data.salary) || 0) > (parseFloat(data.expenses) || 0) && (
-          <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 border border-green-300 dark:border-green-700 rounded-lg px-4 py-2.5 animate-pulse">
+        {isQualified && (
+          <div className={`flex items-center gap-2 bg-green-50 dark:bg-green-900/20 border border-green-300 dark:border-green-700 rounded-lg px-4 py-2.5 ${isPulsing ? 'animate-pulse' : ''}`}>
             <span className="text-green-600 dark:text-green-400 text-lg">🎉</span>
             <p className="text-green-700 dark:text-green-300 font-semibold text-sm">
               Siz ikkinchi aylanaga o'tishingiz kerak!
