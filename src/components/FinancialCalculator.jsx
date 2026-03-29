@@ -4,7 +4,14 @@ export default function FinancialCalculator({ data, updateField }) {
     ? data.investments.reduce((sum, inv) => sum + (parseFloat(inv.income) || 0), 0)
     : 0;
   const expenses = parseFloat(data.expenses) || 0;
-  const cashFlow = (salary + businessIncome) - expenses;
+
+  // Condition: more than 3 businesses AND passive income (businessIncome) > expenses
+  const isBusinessOwner = (data.investments?.length || 0) > 3 && businessIncome > expenses;
+
+  // If condition met, aktiv daromad (salary) is excluded from cash flow
+  const cashFlow = isBusinessOwner
+    ? businessIncome - expenses
+    : (salary + businessIncome) - expenses;
 
   return (
     <div className="bg-white dark:bg-slate-800 border-2 border-green-200 dark:border-green-900/50 rounded-xl p-6 shadow-sm transition-colors duration-200">
@@ -13,22 +20,45 @@ export default function FinancialCalculator({ data, updateField }) {
         Moliyaviy kalkulyator
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-        <div className="md:col-span-3 space-y-2">
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">AKTIV DAROMAD</label>
+
+        {/* AKTIV DAROMAD — struck through when isBusinessOwner */}
+        <div className={`md:col-span-3 space-y-2 transition-all duration-300 ${isBusinessOwner ? 'opacity-40' : ''}`}>
+          <label className={`block text-sm font-semibold uppercase tracking-wider transition-colors duration-200 ${
+            isBusinessOwner
+              ? 'text-gray-400 dark:text-gray-500 line-through'
+              : 'text-gray-700 dark:text-gray-300'
+          }`}>
+            AKTIV DAROMAD
+          </label>
           <div className="relative">
-            <span className="absolute left-0 bottom-1 text-gray-500 dark:text-gray-400 font-medium transition-colors duration-200">$</span>
+            <span className={`absolute left-0 bottom-1 font-medium transition-colors duration-200 ${isBusinessOwner ? 'text-gray-400 dark:text-gray-600' : 'text-gray-500 dark:text-gray-400'}`}>$</span>
             <input
               type="number"
-              className="w-full border-b-2 border-gray-300 dark:border-slate-600 focus:border-green-500 dark:focus:border-green-400 bg-transparent pl-4 pr-2 py-1 outline-none transition-colors duration-200"
+              className={`w-full border-b-2 bg-transparent pl-4 pr-2 py-1 outline-none transition-colors duration-200 ${
+                isBusinessOwner
+                  ? 'border-gray-200 dark:border-slate-700 text-gray-400 dark:text-gray-600 cursor-not-allowed line-through'
+                  : 'border-gray-300 dark:border-slate-600 focus:border-green-500 dark:focus:border-green-400'
+              }`}
               value={data.salary}
               onChange={(e) => updateField('salary', e.target.value)}
               placeholder="0"
+              disabled={isBusinessOwner}
             />
           </div>
+          {isBusinessOwner && (
+            <p className="text-xs text-gray-400 dark:text-gray-500 italic">
+              3+ biznes egasi ish haqi olmaydi
+            </p>
+          )}
         </div>
+
         <div className="md:col-span-1 text-center hidden md:block pb-2 text-gray-400 dark:text-gray-500 font-bold text-xl transition-colors duration-200">+</div>
+
+        {/* PASSIV DAROMAD — always active */}
         <div className="md:col-span-3 space-y-2">
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">PASSIV DAROMAD</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">
+            PASSIV DAROMAD
+          </label>
           <div className="relative">
             <span className="absolute left-0 bottom-1 text-gray-500 dark:text-gray-400 font-medium transition-colors duration-200">$</span>
             <input
@@ -40,7 +70,10 @@ export default function FinancialCalculator({ data, updateField }) {
             />
           </div>
         </div>
+
         <div className="md:col-span-1 text-center hidden md:block pb-2 text-gray-400 dark:text-gray-500 font-bold text-xl transition-colors duration-200">-</div>
+
+        {/* Oylik xarajatlar */}
         <div className="md:col-span-4 space-y-2 relative">
           <label className="block text-sm font-semibold text-gray-700 dark:text-red-400 uppercase tracking-wider text-red-600 transition-colors duration-200">Oylik xarajatlar</label>
           <div className="relative">
