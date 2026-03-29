@@ -7,6 +7,14 @@ import Investments from './components/Investments'
 import RealEstate from './components/RealEstate'
 import AdditionalSections from './components/AdditionalSections'
 
+const getCurrentDate = () => {
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 const initialData = {
   playerName: '',
   profession: '',
@@ -36,13 +44,21 @@ const initialData = {
   debts: '',
   completedRounds: 0,
   notes: '',
-  date: ''
+  date: getCurrentDate()
 }
 
 export default function App() {
   const [data, setData] = useState(() => {
     const saved = localStorage.getItem('financialWorksheet')
-    return saved ? JSON.parse(saved) : initialData
+    if (saved) {
+      const parsed = JSON.parse(saved)
+      // If date is empty in saved data, provide current date
+      if (!parsed.date) {
+        return { ...parsed, date: getCurrentDate() }
+      }
+      return parsed
+    }
+    return initialData
   })
 
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -66,7 +82,7 @@ export default function App() {
 
   const handleReset = () => {
     if (window.confirm('Barcha maydonlarni tozalashga ishonchingiz komilmi?')) {
-      setData(initialData)
+      setData({ ...initialData, date: getCurrentDate() })
     }
   }
 
