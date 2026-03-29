@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Plus, Trash2, X } from 'lucide-react';
+import { Plus, Trash2, X, ChevronDown } from 'lucide-react';
 
 export default function Investments({ data, setData }) {
-  const [showTypeModal, setShowTypeModal] = useState(false);
+  // null = add new, or index number = change type of existing row
+  const [typeModalTarget, setTypeModalTarget] = useState(null);
 
   const handleInvestmentChange = (index, field, value) => {
     setData((prev) => {
@@ -12,15 +13,21 @@ export default function Investments({ data, setData }) {
     });
   };
 
-  const addBusiness = (type) => {
-    setData((prev) => ({
-      ...prev,
-      investments: [
-        ...prev.investments,
-        { id: Date.now(), name: '', value: '', income: '', type }
-      ]
-    }));
-    setShowTypeModal(false);
+  const handleTypeSelect = (type) => {
+    if (typeModalTarget === 'new') {
+      // Add a new row with selected type
+      setData((prev) => ({
+        ...prev,
+        investments: [
+          ...prev.investments,
+          { id: Date.now(), name: '', value: '', income: '', type }
+        ]
+      }));
+    } else if (typeof typeModalTarget === 'number') {
+      // Change type of existing row
+      handleInvestmentChange(typeModalTarget, 'type', type);
+    }
+    setTypeModalTarget(null);
   };
 
   const removeBusiness = (id) => {
@@ -29,6 +36,8 @@ export default function Investments({ data, setData }) {
       investments: prev.investments.filter(inv => inv.id !== id)
     }));
   };
+
+  const showModal = typeModalTarget !== null;
 
   return (
     <div className="bg-white dark:bg-slate-800 border-2 border-indigo-200 dark:border-indigo-900/50 rounded-xl p-6 shadow-sm transition-colors duration-200 relative">
@@ -51,13 +60,19 @@ export default function Investments({ data, setData }) {
             {data.investments.map((inv, index) => (
               <tr key={inv.id} className="hover:bg-gray-50 dark:hover:bg-slate-700/30 transition-colors duration-200">
                 <td className="p-2 border border-indigo-100 dark:border-slate-700">
-                  <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap ${
-                    inv.type === 'Investitsiya'
-                      ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
-                      : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
-                  }`}>
+                  {/* Clickable type badge */}
+                  <button
+                    onClick={() => setTypeModalTarget(index)}
+                    title="Turini o'zgartirish"
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap cursor-pointer hover:opacity-80 transition-opacity ${
+                      inv.type === 'Investitsiya'
+                        ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300'
+                        : 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
+                    }`}
+                  >
                     {inv.type || 'Biznes'}
-                  </span>
+                    <ChevronDown size={10} />
+                  </button>
                 </td>
                 <td className="p-2 border border-indigo-100 dark:border-slate-700 w-1/4">
                   <div className="flex items-center">
@@ -110,7 +125,7 @@ export default function Investments({ data, setData }) {
       </div>
       <div className="mt-4">
         <button
-          onClick={() => setShowTypeModal(true)}
+          onClick={() => setTypeModalTarget('new')}
           className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors text-sm"
         >
           <Plus size={18} /> Yangi biznes qo'shish
@@ -118,32 +133,38 @@ export default function Investments({ data, setData }) {
       </div>
 
       {/* Type Selection Modal */}
-      {showTypeModal && (
+      {showModal && (
         <div className="absolute inset-0 z-10 flex items-center justify-center rounded-xl overflow-hidden">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-            onClick={() => setShowTypeModal(false)}
+            onClick={() => setTypeModalTarget(null)}
           />
           {/* Modal */}
-          <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 w-72 border border-indigo-200 dark:border-indigo-700 animate-fade-in">
+          <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 w-72 border border-indigo-200 dark:border-indigo-700">
             <button
-              onClick={() => setShowTypeModal(false)}
+              onClick={() => setTypeModalTarget(null)}
               className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
             >
               <X size={18} />
             </button>
-            <h3 className="text-base font-bold text-gray-800 dark:text-gray-100 mb-1 text-center">Biznes turini tanlang</h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400 text-center mb-5">Yangi qo'shilayotgan biznesning turini belgilang</p>
+            <h3 className="text-base font-bold text-gray-800 dark:text-gray-100 mb-1 text-center">
+              Biznes turini tanlang
+            </h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center mb-5">
+              {typeModalTarget === 'new'
+                ? "Yangi qo'shilayotgan biznesning turini belgilang"
+                : "Biznesning turini o'zgartiring"}
+            </p>
             <div className="flex flex-col gap-3">
               <button
-                onClick={() => addBusiness('Investitsiya')}
+                onClick={() => handleTypeSelect('Investitsiya')}
                 className="w-full py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-semibold transition-all shadow-md hover:shadow-purple-300 dark:hover:shadow-purple-900 text-sm"
               >
                 📈 Investitsiya
               </button>
               <button
-                onClick={() => addBusiness('Biznes')}
+                onClick={() => handleTypeSelect('Biznes')}
                 className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-all shadow-md hover:shadow-indigo-300 dark:hover:shadow-indigo-900 text-sm"
               >
                 🏢 Biznes
