@@ -123,13 +123,21 @@ export default function Investments({ data, setData }) {
           </tbody>
         </table>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 space-y-3">
         <button
           onClick={() => setTypeModalTarget('new')}
           className="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium transition-colors text-sm"
         >
           <Plus size={18} /> Yangi biznes qo'shish
         </button>
+        {data.investments.length > 3 && (parseFloat(data.salary) || 0) > (parseFloat(data.expenses) || 0) && (
+          <div className="flex items-center gap-2 bg-green-50 dark:bg-green-900/20 border border-green-300 dark:border-green-700 rounded-lg px-4 py-2.5 animate-pulse">
+            <span className="text-green-600 dark:text-green-400 text-lg">🎉</span>
+            <p className="text-green-700 dark:text-green-300 font-semibold text-sm">
+              Siz ikkinchi aylanaga o'tishingiz kerak!
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Type Selection Modal */}
