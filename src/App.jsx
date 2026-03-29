@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Save, RotateCcw } from 'lucide-react'
+import { Save, RotateCcw, Sun, Moon } from 'lucide-react'
 import PlayerInfo from './components/PlayerInfo'
 import FinancialCalculator from './components/FinancialCalculator'
 import Stocks from './components/Stocks'
@@ -88,29 +88,18 @@ export default function App() {
         <div className="bg-purple-700 dark:bg-purple-900 text-white p-6 flex flex-col md:flex-row justify-between items-center print:bg-purple-700 print:text-white transition-colors duration-200">
           <h1 className="text-3xl font-bold tracking-tight mb-4 md:mb-0">Moliyaviy hisobot</h1>
           <div className="flex gap-4">
-            {/* Animated Day/Night Toggle */}
+            {/* Simple Professional Theme Toggle */}
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className={`theme-toggle print:hidden ${isDarkMode ? 'theme-toggle--night' : 'theme-toggle--day'}`}
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 print:hidden focus:outline-none focus:ring-2 focus:ring-white/30"
               title={isDarkMode ? "Kunduzgi rejimga o'tish" : "Tungi rejimga o'tish"}
               aria-label="Toggle dark mode"
             >
-              <span className="theme-toggle__track">
-                <span className="theme-toggle__stars">
-                  <span className="theme-toggle__star theme-toggle__star--1">★</span>
-                  <span className="theme-toggle__star theme-toggle__star--2">★</span>
-                  <span className="theme-toggle__star theme-toggle__star--3">★</span>
-                </span>
-                <span className="theme-toggle__clouds">
-                  <span className="theme-toggle__cloud theme-toggle__cloud--1">☁</span>
-                  <span className="theme-toggle__cloud theme-toggle__cloud--2">☁</span>
-                </span>
-                <span className="theme-toggle__thumb">
-                  <span className="theme-toggle__icon">
-                    {isDarkMode ? '🌙' : '☀️'}
-                  </span>
-                </span>
-              </span>
+              {isDarkMode ? (
+                <Sun className="text-yellow-300 transition-transform hover:rotate-45" size={20} />
+              ) : (
+                <Moon className="text-indigo-200 transition-transform hover:-rotate-12" size={20} />
+              )}
             </button>
             <button 
               onClick={handleSave} 

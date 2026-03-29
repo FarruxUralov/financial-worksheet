@@ -1,143 +1,28 @@
 /* =============================================
-   Animated Day/Night Toggle Switch
+   Animated Landscape Theme Toggle
    ============================================= */
-
-.theme-toggle {
-  position: relative;
-  width: 72px;
-  height: 36px;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  background: transparent;
-  flex-shrink: 0;
-}
-
-.theme-toggle__track {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border-radius: 50px;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.5s ease;
-}
-
-.theme-toggle--day .theme-toggle__track {
-  background: linear-gradient(135deg, #87CEEB 0%, #b0e0ff 100%);
-  box-shadow: 0 0 12px rgba(135, 206, 235, 0.6);
-}
-
-.theme-toggle--night .theme-toggle__track {
-  background: linear-gradient(135deg, #1a1a3e 0%, #0d1b4b 100%);
-  box-shadow: 0 0 12px rgba(100, 120, 255, 0.5);
-}
-
-/* Thumb (circle that slides) */
-.theme-toggle__thumb {
-  position: absolute;
-  top: 3px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  transition: left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-              background 0.5s ease,
-              box-shadow 0.5s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-}
-
-.theme-toggle--day .theme-toggle__thumb {
-  left: 3px;
-  background: radial-gradient(circle at 35% 35%, #fff7a1, #ffd700);
-  box-shadow: 0 0 10px 2px rgba(255, 215, 0, 0.7);
-}
-
-.theme-toggle--night .theme-toggle__thumb {
-  left: 39px;
-  background: radial-gradient(circle at 65% 35%, #e8e8ff, #c8c8f8);
-  box-shadow: 0 0 10px 2px rgba(200, 200, 255, 0.5);
-}
-
-.theme-toggle__icon {
-  font-size: 16px;
-  line-height: 1;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
-  display: block;
-}
-
-.theme-toggle--night .theme-toggle__icon {
-  transform: rotate(-20deg);
-}
-
-/* Stars (visible in night mode) */
-.theme-toggle__stars {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  transition: opacity 0.4s ease;
-}
-
-.theme-toggle--day .theme-toggle__stars {
-  opacity: 0;
-}
-
-.theme-toggle--night .theme-toggle__stars {
-  opacity: 1;
-}
-
-.theme-toggle__star {
-  position: absolute;
-  color: white;
-  font-size: 7px;
-  animation: twinkle 2s infinite alternate;
-}
-
-.theme-toggle__star--1 { top: 6px;  left: 10px; animation-delay: 0s;    font-size: 6px; }
-.theme-toggle__star--2 { top: 18px; left: 18px; animation-delay: 0.5s;  font-size: 5px; }
-.theme-toggle__star--3 { top: 8px;  left: 24px; animation-delay: 1s;    font-size: 7px; }
-
-@keyframes twinkle {
-  0%   { opacity: 0.4; transform: scale(0.8); }
-  100% { opacity: 1;   transform: scale(1.2); }
-}
-
-/* Clouds (visible in day mode) */
-.theme-toggle__clouds {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  transition: opacity 0.4s ease;
-}
-
-.theme-toggle--night .theme-toggle__clouds {
-  opacity: 0;
-}
-
-.theme-toggle--day .theme-toggle__clouds {
-  opacity: 1;
-}
-
-.theme-toggle__cloud {
-  position: absolute;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 12px;
-  animation: float 3s ease-in-out infinite alternate;
-}
-
-.theme-toggle__cloud--1 { bottom: 2px;  right: 4px;  animation-delay: 0s;   font-size: 14px; }
-.theme-toggle__cloud--2 { bottom: 10px; right: 16px; animation-delay: 0.8s; font-size: 10px; }
-
-@keyframes float {
-  0%   { transform: translateX(0px); }
-  100% { transform: translateX(3px); }
-}
 
 /* =============================================
-   Original styles below
+   App Theming (Dark Mode overrides)
    ============================================= */
+
+.dark .bg-slate-800 {
+  background-color: var(--bg-card) !important;
+}
+
+.dark .bg-slate-900 {
+  background-color: var(--bg-primary) !important;
+}
+
+.dark .text-gray-100, .dark .text-gray-300 {
+  color: var(--text-primary) !important;
+}
+
+/* Sticky Header in Dark Mode */
+.dark .bg-purple-900 {
+  background-color: #1A1A3E !important; /* Indigo header from screenshot */
+  border-bottom: 1px solid rgba(157, 120, 255, 0.2);
+}
 
 .counter {
 
