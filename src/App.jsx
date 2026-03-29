@@ -36,8 +36,7 @@ const initialData = {
   debts: '',
   completedRounds: 0,
   notes: '',
-  date: '',
-  signature: ''
+  date: ''
 }
 
 export default function App() {

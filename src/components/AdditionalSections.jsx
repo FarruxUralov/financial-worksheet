@@ -71,7 +71,7 @@ export default function AdditionalSections({ data, updateField }) {
         </div>
       </div>
 
-      <div className="pt-6 border-t border-orange-100 dark:border-orange-900/50 grid grid-cols-1 md:grid-cols-2 gap-8 items-end transition-colors duration-200">
+      <div className="pt-6 border-t border-orange-100 dark:border-orange-900/50 max-w-xs transition-colors duration-200">
         <div className="space-y-2">
           <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">Sana</label>
           <input
@@ -80,16 +80,6 @@ export default function AdditionalSections({ data, updateField }) {
             placeholder="KK/OO/YYYY"
             value={data.date}
             onChange={(e) => updateField('date', e.target.value)}
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider transition-colors duration-200">Imzo</label>
-          <input
-            type="text"
-            className="w-full border-b-2 border-gray-300 dark:border-slate-600 focus:border-orange-500 dark:focus:border-orange-400 bg-transparent px-2 py-1 outline-none transition-colors duration-200 italic font-serif"
-            placeholder="Shu yerga imzo qo'ying"
-            value={data.signature}
-            onChange={(e) => updateField('signature', e.target.value)}
           />
         </div>
       </div>
