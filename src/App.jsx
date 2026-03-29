@@ -31,9 +31,9 @@ const initialData = {
     UTY: { quantity: '', price: '' },
   },
   investments: [
-    { id: 1, name: '', value: '', income: '' },
-    { id: 2, name: '', value: '', income: '' },
-    { id: 3, name: '', value: '', income: '' },
+    { id: 1, name: '', value: '', income: '', type: 'Biznes' },
+    { id: 2, name: '', value: '', income: '', type: 'Biznes' },
+    { id: 3, name: '', value: '', income: '', type: 'Biznes' },
   ],
   realEstate: [
     { id: 1, value: '', size: '' },
