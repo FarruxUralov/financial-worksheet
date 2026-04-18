@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Save, RotateCcw, Sun, Moon } from 'lucide-react'
 import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import PlayerInfo from './components/PlayerInfo'
 import FinancialCalculator from './components/FinancialCalculator'
 import Stocks from './components/Stocks'
@@ -100,6 +101,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900 dark:text-gray-100 p-4 md:p-8 font-sans pb-24 transition-colors duration-200">
       <Analytics />
+      <SpeedInsights />
       <div className="max-w-4xl mx-auto bg-white dark:bg-slate-800 shadow-xl rounded-xl border border-gray-200 dark:border-slate-700 overflow-hidden transition-colors duration-200">
         {/* Header Section */}
         <div className="bg-purple-700 dark:bg-purple-900 text-white p-6 flex flex-col md:flex-row justify-between items-center print:bg-purple-700 print:text-white transition-colors duration-200">
